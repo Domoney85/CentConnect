@@ -1,0 +1,66 @@
+﻿@using CentConnect.Models
+@model IEnumerable<TransPackage>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Account Summary</h2>
+<table class="table">
+    <tr>
+        <th>
+            <h3>Current Balance</h3>
+        </th>
+        <th><h3>@ViewBag.SumAccount Cr</h3></th>
+    </tr>
+    <p>
+        @{Html.RenderAction("GMRender", "Transactions"); }
+        @{Html.RenderAction("PlayerSend", "Transactions"); }
+
+        @ViewBag.ErrorMessage
+
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.recieve)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.send)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.reason)
+            </th>
+            <th>
+                Transaction Time
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{Html.RenderAction("RenderName", "CharAccs", new { id = Int32.Parse(item.tName) });}
+                </td>
+                <td>
+
+                    @Html.DisplayFor(modelItem => item.recieve)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.send)
+                </td>
+                <td style="max-width:150px">
+                    @Html.DisplayFor(modelItem => item.reason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransTime)
+                </td>
+
+            </tr>
+        }
+
+    </table>

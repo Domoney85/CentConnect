@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CentPayDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Campaigns">
+          <Key>
+            <PropertyRef Name="CampID" />
+          </Key>
+          <Property Name="CampID" Type="int" Nullable="false" />
+          <Property Name="CampName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="GMPass" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CharAcc">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharName" Type="varchar" MaxLength="50" />
+          <Property Name="AccId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsAlive" Type="bit" />
+          <Property Name="IsGM" Type="nchar" MaxLength="10" />
+          <Property Name="CampID" Type="int" Nullable="false" />
+          <Property Name="Removed" Type="bit" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransId" />
+          </Key>
+          <Property Name="TransId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SendId" Type="int" Nullable="false" />
+          <Property Name="RecId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="TransTime" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="CentPayDBModelStoreContainer">
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Campaigns" EntityType="Self.Campaigns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharAcc" EntityType="Self.CharAcc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CentPayDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="CampID" />
+          </Key>
+          <Property Name="CampID" Type="Int32" Nullable="false" />
+          <Property Name="CampName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GMPass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CharAcc">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharId" Type="Int32" Nullable="false" />
+          <Property Name="CharName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsAlive" Type="Boolean" />
+          <Property Name="IsGM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CampID" Type="Int32" Nullable="false" />
+          <Property Name="AccId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Removed" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransId" />
+          </Key>
+          <Property Name="TransId" Type="Int32" Nullable="false" />
+          <Property Name="SendId" Type="Int32" Nullable="false" />
+          <Property Name="RecId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="TransTime" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="CentPayDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
+          <EntitySet Name="Campaigns" EntityType="Self.Campaign" />
+          <EntitySet Name="CharAccs" EntityType="Self.CharAcc" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CentPayDBModelStoreContainer" CdmEntityContainer="CentPayDBEntities">
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="CentPayDBModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Campaigns">
+            <EntityTypeMapping TypeName="CentPayDBModel.Campaign">
+              <MappingFragment StoreEntitySet="Campaigns">
+                <ScalarProperty Name="GMPass" ColumnName="GMPass" />
+                <ScalarProperty Name="CampID" ColumnName="CampID" />
+                <ScalarProperty Name="CampName" ColumnName="CampName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharAccs">
+            <EntityTypeMapping TypeName="CentPayDBModel.CharAcc">
+              <MappingFragment StoreEntitySet="CharAcc">
+                <ScalarProperty Name="Removed" ColumnName="Removed" />
+                <ScalarProperty Name="AccId" ColumnName="AccId" />
+                <ScalarProperty Name="CharId" ColumnName="CharId" />
+                <ScalarProperty Name="CharName" ColumnName="CharName" />
+                <ScalarProperty Name="IsAlive" ColumnName="IsAlive" />
+                <ScalarProperty Name="IsGM" ColumnName="IsGM" />
+                <ScalarProperty Name="CampID" ColumnName="CampID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="CentPayDBModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransTime" ColumnName="TransTime" />
+                <ScalarProperty Name="TransId" ColumnName="TransId" />
+                <ScalarProperty Name="SendId" ColumnName="SendId" />
+                <ScalarProperty Name="RecId" ColumnName="RecId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

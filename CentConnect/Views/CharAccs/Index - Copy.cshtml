@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CentConnect.Models.CharAcc>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CharName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAlive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsGM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CampID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CharName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAlive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsGM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CampID)
+        </td>
+        <td>
+            @Html.ActionLink("Account", "Index", "Transactions", new { id = item.CharId }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.CharId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.CharId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.CharId })
+        </td>
+    </tr>
+}
+
+</table>

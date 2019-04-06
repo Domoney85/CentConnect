@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CentConnect.Models.Transaction>
+
+@{
+    ViewBag.Title = "GMRender";
+}
+<h1>Welcome</h1>
+<h2>GM OPTIONS</h2>
+<h3>@Html.ActionLink("GM Transactions", "Create")</h3>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SendId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reason)
+        </th>
+        <th>
+            Transaction Time
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{Html.RenderAction("RenderName", "CharAccs", new { id = item.SendId });}
+            </td>
+            <td>
+
+                @{Html.RenderAction("RenderName", "CharAccs", new { id = item.RecId });}
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td style="max-width:150px">
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TransId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.TransId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.TransId })
+            </td>
+        </tr>
+    }
+
+</table>
