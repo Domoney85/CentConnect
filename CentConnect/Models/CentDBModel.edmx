@@ -43,11 +43,30 @@
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="TransTime" Type="datetime2" Precision="7" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CentPayDB.dbo.SummaryAcc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SummaryAcc">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharName" Type="varchar" MaxLength="50" />
+          <Property Name="CharId" Type="int" Nullable="false" />
+          <Property Name="Total" Type="int" />
+          <Property Name="CampID" Type="int" />
+        </EntityType>
         <EntityContainer Name="CentPayDBModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campaigns" EntityType="Self.Campaigns" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharAcc" EntityType="Self.CharAcc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SummaryAcc" EntityType="Self.SummaryAcc" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SummaryAcc].[CharName] AS [CharName], 
+    [SummaryAcc].[CharId] AS [CharId], 
+    [SummaryAcc].[Total] AS [Total], 
+    [SummaryAcc].[CampID] AS [CampID]
+    FROM [dbo].[SummaryAcc] AS [SummaryAcc]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -96,7 +115,17 @@
           <EntitySet Name="Campaigns" EntityType="Self.Campaign" />
           <EntitySet Name="CharAccs" EntityType="Self.CharAcc" />
           <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <EntitySet Name="SummaryAccs" EntityType="CentPayDBModel.SummaryAcc" />
         </EntityContainer>
+        <EntityType Name="SummaryAcc">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CharId" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Int32" />
+          <Property Name="CampID" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -142,6 +171,16 @@
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Reason" ColumnName="Reason" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SummaryAccs">
+            <EntityTypeMapping TypeName="CentPayDBModel.SummaryAcc">
+              <MappingFragment StoreEntitySet="SummaryAcc">
+                <ScalarProperty Name="CampID" ColumnName="CampID" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="CharId" ColumnName="CharId" />
+                <ScalarProperty Name="CharName" ColumnName="CharName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -20,34 +20,50 @@ namespace CentConnect.Controllers
         // GET: Transactions
         public async Task<ActionResult> Index(int? id)
         {
-            
+
             List<TransPackage> tempList = new List<TransPackage>();
             var UserID = User.Identity.GetUserId();
             if (db.CharAccs.Find(id).AccId == UserID)
             {
                 var charTrans = from c in db.Transactions
                                 where c.SendId.ToString() == id.ToString() || c.RecId.ToString() == id.ToString()
+                                orderby c.TransTime descending
                                 select c;
-                
+
                 int Rec = 0;
                 int Sent = 0;
                 //ViewBag.ActiveList = activeChar.ToList();
-                if(charTrans.Count()>0)
-                { 
-                Rec = charTrans.Where(a=>a.RecId == id).Sum(a => a.Amount);
-                Sent = charTrans.Where(a => a.SendId == id).Sum(a => a.Amount);
+                if (charTrans.Count() > 0)
+                {
+                    try
+                    {
+                        Rec = charTrans.Where(a => a.RecId == id).Sum(a => a.Amount);
+                    }
+                    catch (Exception e)
+                    {
+                        Rec = 0;
+                    }
+                    try
+                    {
+                        Sent = charTrans.Where(a => a.SendId == id).Sum(a => a.Amount);
+                    }
+                    catch (Exception e)
+                    {
+                        Sent = 0;
+                    }
+
                 }
                 SessionInfo.TempCampID = db.CharAccs.Find(id).CampID;
                 SessionInfo.TempGMPass = db.CharAccs.Find(id).IsGM;
                 SessionInfo.TempCharID = (int)id;
                 SessionInfo.SumAccount = Rec - Sent;
 
-                foreach(Transaction x in charTrans)
+                foreach (Transaction x in charTrans)
                 {
-                    string tempId;
-                    int tempSent=0;
-                    int tempRec=0;
-                    if (x.RecId != id) { tempId = x.RecId.ToString(); tempSent = x.Amount; } else { tempId = x.SendId.ToString(); tempRec = x.Amount; }
+                    int tempId;
+                    int tempSent = 0;
+                    int tempRec = 0;
+                    if (x.RecId != id) { tempId = x.RecId; tempSent = x.Amount; } else { tempId = x.SendId; tempRec = x.Amount; }
 
                     TransPackage temptrans = new TransPackage(tempId, tempRec, tempSent, x.Reason, x.TransTime);
                     tempList.Add(temptrans);
@@ -70,9 +86,17 @@ namespace CentConnect.Controllers
             {
                 if (db.Campaigns.Find(SessionInfo.TempCampID).GMPass.Trim() == SessionInfo.TempGMPass.Trim())
                 {
-                    return PartialView("_GMRender", db.Transactions.ToList());
+                    var charList = from x in db.CharAccs
+                                   where x.CampID == SessionInfo.TempCampID
+                                   select x.CharId;
+
+                    var GMTrans = from c in db.Transactions
+                                    where charList.Contains(c.SendId)|| charList.Contains(c.RecId)
+                                    orderby c.TransTime descending
+                                    select c;
+                    return PartialView("_GMRender", GMTrans.ToList());
                 }
-                return Content("<H2>Welcome "+db.CharAccs.Find(SessionInfo.TempCharID).CharName+"</H2></br> Your GMPassword did not work");
+                return Content("<H2>Welcome " + db.CharAccs.Find(SessionInfo.TempCharID).CharName + "</H2></br> Your GMPassword did not work");
             }
             // "TransId,SendId,RecId,Amount,Reason,Status"
             else
@@ -111,12 +135,12 @@ namespace CentConnect.Controllers
         public async Task<ActionResult> Create([Bind(Include = "TransId,SendId,RecId,Amount,Reason,Status")] Transaction transaction)
         {
             transaction.Status = true;
-            transaction.TransTime = System.DateTime.Now; 
+            transaction.TransTime = System.DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Transactions.Add(transaction);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index"+"/"+ SessionInfo.TempCharID);
+                return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
             }
 
             return View(transaction);
@@ -128,12 +152,12 @@ namespace CentConnect.Controllers
         public ActionResult PlayerSend(int? Id)
         {
             ViewBag.ErrorMessage = SessionInfo.errorFundMessage;
-            var campID =  db.CharAccs.Find(Id).CampID;
+            var campID = db.CharAccs.Find(Id).CampID;
             var activeChar = from x in db.CharAccs
-                             where x.Removed != true && x.CampID==campID
-                             select x; 
-         ViewBag.charList = activeChar.ToList();
-            
+                             where x.Removed != true && x.CampID == campID
+                             select x;
+            ViewBag.charList = activeChar.ToList();
+
             return PartialView("PlayerSend");
         }
 
@@ -144,25 +168,26 @@ namespace CentConnect.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index([Bind(Include = "TransId,SendId,RecId,Amount,Reason,Status")] Transaction transaction)
         {
-                transaction.SendId = SessionInfo.TempCharID;
-                transaction.Status = true;
-                transaction.TransTime = System.DateTime.Now;
-                if (ModelState.IsValid)
+            transaction.SendId = SessionInfo.TempCharID;
+            transaction.Status = true;
+            transaction.TransTime = System.DateTime.Now;
+            transaction.Amount = Int32.Parse(transaction.Amount.ToString());
+            if (ModelState.IsValid)
+            {
+                if (transaction.Amount <= SessionInfo.SumAccount)
                 {
-                    if (transaction.Amount <= SessionInfo.SumAccount)
-                    {
-                        ViewBag.ErrorMessage = "";
-                        db.Transactions.Add(transaction);
-                        await db.SaveChangesAsync();
-                        SessionInfo.errorFundMessage = "";
-                        return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
-                    }
-                    else
-                    {
-                    SessionInfo.errorFundMessage = "Insufficient Funds";
-                        return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
-                    }
+                    ViewBag.ErrorMessage = "";
+                    db.Transactions.Add(transaction);
+                    await db.SaveChangesAsync();
+                    SessionInfo.errorFundMessage = "";
+                    return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
                 }
+                else
+                {
+                    SessionInfo.errorFundMessage = "Insufficient Funds";
+                    return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
+                }
+            }
             SessionInfo.errorFundMessage = "";
             return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
         }
@@ -234,6 +259,13 @@ namespace CentConnect.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public ActionResult GMAccount()
+        {
+            var SumAcc = from x in db.SummaryAccs
+                         where x.CampID == SessionInfo.TempCampID
+                         select x;
+            return View("GMAccount", db.SummaryAccs.ToList());
         }
     }
 }

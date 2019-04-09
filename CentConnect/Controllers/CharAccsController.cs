@@ -145,7 +145,7 @@ namespace CentConnect.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CharAcc charAcc = db.CharAccs.Find(id);
-            db.CharAccs.Remove(charAcc);
+            charAcc.Removed=true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -25,9 +25,20 @@ namespace CentConnect.Models
     }
     public class TransactionMetaData
     {
-
+        [DisplayFormat(DataFormatString = "{0:n0}", ApplyFormatInEditMode = true)]
         [Display(Name = "Amount")]
-        [Range(0, 999999999)]
+        [Range(1, 999999999)]
         public int Amount { get; set; }
+
+        [Display(Name = "Reciever")]
+        public int RecId { get; set; }
+        [Required]
+        public string Reason { get; set; }
     }
+    public class SummaryAccMetaData
+    {
+        [DisplayFormat(DataFormatString = "{0:n0}", ApplyFormatInEditMode = true)]
+        public int Total { get; set; }
+    }
+
 }

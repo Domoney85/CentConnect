@@ -16,4 +16,9 @@ namespace CentConnect.Models
     {
 
     }
+    [MetadataType(typeof(SummaryAccMetaData))]
+    public partial class SummaryAcc
+    {
+
+    }
 }

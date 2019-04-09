@@ -26,3 +26,7 @@ textarea {
 	width: 5px;
 	overflow: hidden;
 }
+.jumbotron {
+	background-image: url('../Pictures/Astronomer Background.png');
+	color: darkgrey;
+}
