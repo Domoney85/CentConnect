@@ -7,16 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CentConnect
+namespace CentConnect.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class C__MigrationHistory
+    public partial class ModTable
     {
-        public string MigrationId { get; set; }
-        public string ContextKey { get; set; }
-        public byte[] Model { get; set; }
-        public string ProductVersion { get; set; }
+        public int ModId { get; set; }
+        public string UserId { get; set; }
+        public System.DateTime PostedTime { get; set; }
+        public int CampID { get; set; }
+        public string Content { get; set; }
+        public string Sig { get; set; }
+        public string Heading { get; set; }
     }
 }

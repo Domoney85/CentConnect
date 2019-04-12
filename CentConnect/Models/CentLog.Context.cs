@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CentConnect
+namespace CentConnect.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CentConnectLogEntities : DbContext
     {
@@ -30,5 +32,32 @@ namespace CentConnect
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
+    
+        public virtual int AddUserToRole(string uID, string rID)
+        {
+            var uIDParameter = uID != null ?
+                new ObjectParameter("UID", uID) :
+                new ObjectParameter("UID", typeof(string));
+    
+            var rIDParameter = rID != null ?
+                new ObjectParameter("RID", rID) :
+                new ObjectParameter("RID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddUserToRole", uIDParameter, rIDParameter);
+        }
+    
+        public virtual int RemoveUserRole(string uID, string rID)
+        {
+            var uIDParameter = uID != null ?
+                new ObjectParameter("UID", uID) :
+                new ObjectParameter("UID", typeof(string));
+    
+            var rIDParameter = rID != null ?
+                new ObjectParameter("RID", rID) :
+                new ObjectParameter("RID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveUserRole", uIDParameter, rIDParameter);
+        }
     }
 }

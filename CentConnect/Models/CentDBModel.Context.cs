@@ -30,5 +30,6 @@ namespace CentConnect.Models
         public virtual DbSet<CharAcc> CharAccs { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<SummaryAcc> SummaryAccs { get; set; }
+        public virtual DbSet<ModTable> ModTables { get; set; }
     }
 }

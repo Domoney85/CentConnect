@@ -18,7 +18,7 @@ namespace CentConnect.Controllers
         private CentPayDBEntities db = new CentPayDBEntities();
 
         // GET: Transactions
-        public async Task<ActionResult> Index(int? id)
+        public ActionResult Index(int? id)
         {
 
             List<TransPackage> tempList = new List<TransPackage>();
@@ -39,7 +39,7 @@ namespace CentConnect.Controllers
                     {
                         Rec = charTrans.Where(a => a.RecId == id).Sum(a => a.Amount);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Rec = 0;
                     }
@@ -47,7 +47,7 @@ namespace CentConnect.Controllers
                     {
                         Sent = charTrans.Where(a => a.SendId == id).Sum(a => a.Amount);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Sent = 0;
                     }

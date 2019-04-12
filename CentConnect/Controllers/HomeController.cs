@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CentConnect.Models;
+using System.Security.Claims;
 
 namespace CentConnect.Controllers
 {

@@ -175,29 +175,31 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="AspNetRole.cs">
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ModTablesController.cs" />
+    <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
-    <Compile Include="AspNetUser.cs">
+    <Compile Include="Models\AspNetUser.cs">
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
-    <Compile Include="AspNetUserClaim.cs">
+    <Compile Include="Models\AspNetUserClaim.cs">
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
-    <Compile Include="AspNetUserLogin.cs">
+    <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
-    <Compile Include="CentLog.Context.cs">
+    <Compile Include="Models\CentLog.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CentLog.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="CentLog.cs">
+    <Compile Include="Models\CentLog.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
-    <Compile Include="CentLog.Designer.cs">
+    <Compile Include="Models\CentLog.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CentLog.edmx</DependentUpon>
@@ -208,7 +210,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
-    <Compile Include="C__MigrationHistory.cs">
+    <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>CentLog.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
@@ -243,6 +245,10 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Metadata.cs" />
+    <Compile Include="Models\ModTable.cs">
+      <DependentUpon>CentDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MyContext.cs" />
     <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="Models\SessionInfo.cs" />
     <Compile Include="Models\SummaryAcc.cs">
@@ -252,16 +258,19 @@
       <DependentUpon>CentDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TransPackage.cs" />
+    <Compile Include="Models\UserRole.cs">
+      <DependentUpon>CentLog.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CentLog.Context.tt">
+    <Content Include="Models\CentLog.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CentLog.edmx</DependentUpon>
       <LastGenOutput>CentLog.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="CentLog.tt">
+    <Content Include="Models\CentLog.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CentLog.edmx</DependentUpon>
       <LastGenOutput>CentLog.cs</LastGenOutput>
@@ -285,7 +294,7 @@
       <DependentUpon>CentDBModel.edmx</DependentUpon>
       <LastGenOutput>CentDBModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Pictures\Astronomer Background.png" />
+    <Content Include="Pictures\SciFiBacking.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\CentDBModel.edmx">
@@ -295,11 +304,11 @@
     <Content Include="Models\CentDBModel.edmx.diagram">
       <DependentUpon>CentDBModel.edmx</DependentUpon>
     </Content>
-    <EntityDeploy Include="CentLog.edmx">
+    <EntityDeploy Include="Models\CentLog.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CentLog.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="CentLog.edmx.diagram">
+    <Content Include="Models\CentLog.edmx.diagram">
       <DependentUpon>CentLog.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\CentConnect - Web Deploy.pubxml" />
@@ -366,9 +375,19 @@
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\PlayerSend.cshtml" />
+    <Content Include="Views\Shared\_GMBtn.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\UserRoles.cshtml" />
+    <Content Include="Views\ModTables\Delete.cshtml" />
+    <Content Include="Views\ModTables\Details.cshtml" />
+    <Content Include="Views\ModTables\Edit.cshtml" />
+    <Content Include="Views\ModTables\Index.cshtml" />
+    <Content Include="Views\ModTables\AddMessage.cshtml" />
+    <Content Include="Views\ModTables\AddMessage - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

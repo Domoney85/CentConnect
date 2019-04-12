@@ -8,7 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using CentConnect.Models;
 using Microsoft.AspNet.Identity;
-using System.Linq;
+
+using System.Security.Claims;
 
 using System.ComponentModel;
 
@@ -17,13 +18,14 @@ namespace CentConnect.Controllers
     public class CharAccsController : Controller
     {
         private CentPayDBEntities db = new CentPayDBEntities();
-        private List<Campaign> campaignList = new List<Campaign>();
+
 
         // GET: CharAccs
         [Authorize]
         public ActionResult Index()
         { 
             var UserID = User.Identity.GetUserId();
+   
             var model = from c in db.CharAccs
                         where c.AccId.ToString() == UserID && c.Removed != true
                         select c;
@@ -149,7 +151,7 @@ namespace CentConnect.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+   
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -158,6 +160,7 @@ namespace CentConnect.Controllers
             }
             base.Dispose(disposing);
         }
+
         
     }
 

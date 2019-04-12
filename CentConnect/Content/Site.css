@@ -1,6 +1,8 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	background-image:url('../Pictures/SciFiBacking.jpg');
+	
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -20,13 +22,101 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+	background-color: rgba(79, 81, 81, 0.80);
+	color: darkgray;
+	margin: 5px 5px 5px 5px;
+	padding:5px 5px 5px 5px;
 }
 .Display_CO {
 	width: 5px;
 	overflow: hidden;
 }
 .jumbotron {
-	background-image: url('../Pictures/Astronomer Background.png');
+	background-image: url('../Pictures/Astronomer Background.jpg');
 	color: darkgrey;
+	margin-bottom:0px;
+}
+a.ButtonClass {
+	background-color: rgba(53, 54, 54, 0.90);
+	padding: 8px 8px 8px 8px;
+	border: 2px solid darkgrey;
+	color: darkgrey;
+	text-decoration: none;
+	border-radius: 10px;
+}
+
+	a.ButtonClass:hover {
+		background-color: #808080
+	}
+.MessageBoard {
+	align-self: center;
+	background-color: rgba(75, 77, 77, 0.80);
+	color: darkgrey;
+	width: 95%;
+	border-radius: 10px;
+	
+}
+
+.MessageBoard {
+	margin-top: 20px;
+	padding-bottom: 30px;
+	margin-bottom: 20px;
+	margin-left: 25px;
+	color: darkgray;
+	
+}
+
+		.MessageBoard td {
+			text-align: center;
+			background-color: rgba(156, 156, 156, 0.20);
+		}
+	.MessageBoard th {
+		Padding: 5px 5px 5px 5px;
+		
+		text-align:center;
+	}
+
+.MessageBoard p {
+	margin-top: 30px;
+	
+	padding-left: 30px;
+	padding-right: 30px;
+	font-size: 16px;
+	font-weight: 200;
+}
+#MessageSend td{text-align:center;}
+/*Apart of Message board*/
+.signature{text-align:center;}
+.PostedTime {
+	text-align: center;
+}
+.container .MessageBoard,
+.container-fluid .MessageBoard {
+	padding-right: 15px;
+	padding-left: 15px;
+	
+}
+
+#DisplayBoard tr {
+	
+	border-bottom: 2px solid darkgray;
+	border-top: 2px solid white;
+}
+@media screen and (min-width: 768px) {
+
+	.MessageBoard {
+		padding-top: 48px;
+		padding-bottom: 48px;
+	}
+
+	.container .MessageBoard,
+	.container-fluid .MessageBoard {
+		padding-right: 60px;
+		padding-left: 60px;
+	}
+
+	.MessageBoard h1,
+	.MessageBoard .h1 {
+		font-size: 63px;
+	}
 }

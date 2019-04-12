@@ -9,7 +9,8 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+
+<table class="MessageBoard"id="DisplayBoard">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.CharName)
@@ -23,25 +24,26 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CharName)
-        </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CharName)
+            </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.IsAlive)
-        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAlive)
+            </td>
 
-        <td>
-            @{Html.RenderAction("DisplayName", "Campaigns",new { id = item.CampID });}
-        </td>
-        <td>
-            @Html.ActionLink("Account", "Index", "Transactions",new { id = item.CharId },null) |
-            @Html.ActionLink("Edit", "Edit", new { id = item.CharId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.CharId })
-        </td>
-    </tr>
-}
+            <td>
+                @{Html.RenderAction("DisplayName", "Campaigns", new { id = item.CampID });}
+            </td>
+            <td>
+                @Html.ActionLink("Account", "Index", "Transactions", new { id = item.CharId }, new { @class = "ButtonClass" }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.CharId }, new { @class = "ButtonClass" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CharId }, new { @class = "ButtonClass" })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -12,11 +12,11 @@ namespace CentConnect.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SummaryAcc
+    public partial class C__MigrationHistory
     {
-        public string CharName { get; set; }
-        public int CharId { get; set; }
-        public Nullable<int> Total { get; set; }
-        public int CampID { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

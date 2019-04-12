@@ -21,4 +21,9 @@ namespace CentConnect.Models
     {
 
     }
+    [MetadataType(typeof(ModTableMetaData))]
+    public partial class ModTable
+    {
+
+    }
 }

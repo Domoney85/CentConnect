@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CentConnect
+namespace CentConnect.Models
 {
     using System;
     using System.Collections.Generic;

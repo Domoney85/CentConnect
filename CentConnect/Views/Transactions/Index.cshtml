@@ -13,6 +13,7 @@
         </th>
         <th><h3>@String.Format("{0:n0}", ViewBag.SumAccount) Cr</h3></th>
     </tr>
+    </table>
     <p>
         @{Html.RenderAction("GMRender", "Transactions"); }
         @{Html.RenderAction("PlayerSend", "Transactions"); }
@@ -20,7 +21,7 @@
         @ViewBag.ErrorMessage
 
     </p>
-    <table class="table">
+    <table class="MessageBoard" id="DisplayBoard">
         <tr>
             <th>
                 Character
@@ -37,7 +38,7 @@
             <th>
                 Transaction Time
             </th>
-            <th></th>
+           
         </tr>
 
             @foreach (var item in Model)

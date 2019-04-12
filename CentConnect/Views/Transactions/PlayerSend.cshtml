@@ -38,7 +38,7 @@
         @Html.LabelFor(model => model.RecId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.RecId,
-new SelectList(ViewBag.charList, "CharID", "CharName"), new { htmlAttributes = new { @class = "form-control" } })
+new SelectList(ViewBag.charList, "CharID", "CharName"), new { htmlAttributes = new { @class = "NewForm" } })
             @Html.ValidationMessageFor(model => model.RecId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -46,7 +46,7 @@ new SelectList(ViewBag.charList, "CharID", "CharName"), new { htmlAttributes = n
     <div class="form-group">
         @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "NewForm" } })
             @Html.ValidationMessageFor(model => model.Amount, errorMessage, new { @class = "text-danger" })
         </div>
     </div>
@@ -54,7 +54,7 @@ new SelectList(ViewBag.charList, "CharID", "CharName"), new { htmlAttributes = n
     <div class="form-group">
         @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "NewForm" } })
             @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -70,8 +70,8 @@ new SelectList(ViewBag.charList, "CharID", "CharName"), new { htmlAttributes = n
         </div>
     *@
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Send Credits" class="btn btn-default" />
+        <div class="col-md-offset-3 col-md-10">
+            <input type="submit" value="Send Credits" class="ButtonClass" />
         </div>
     </div>
 </div>

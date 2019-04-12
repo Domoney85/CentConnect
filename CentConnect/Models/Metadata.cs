@@ -40,5 +40,16 @@ namespace CentConnect.Models
         [DisplayFormat(DataFormatString = "{0:n0}", ApplyFormatInEditMode = true)]
         public int Total { get; set; }
     }
+    public class ModTableMetaData
+    {
+        [Display(Name ="Signature")]
+        public string Sig { get; set; }
+        [Display(Name = "Campaign")]
+        public int CampID { get; set; }
+        [Display(Name = "Message Header")]
+        public string Heading { get; set; }
+        [Display(Name = "Message Content")]
+        public string Content { get; set; }
+    }
 
 }

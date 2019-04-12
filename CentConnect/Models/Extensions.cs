@@ -43,5 +43,16 @@ namespace CentConnect.Models
             return table;
         }
     }
+    public class RollUser
+    {
+        String name;
+        String role;
+        public RollUser(String n, String r)
+        {
+            name = n;
+            role = r;
+        }
+
+    }
    
 }

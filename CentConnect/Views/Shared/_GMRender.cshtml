@@ -5,9 +5,9 @@
 }
 <h1>Welcome</h1>
 <h2>GM OPTIONS</h2>
-<h3>@Html.ActionLink("GM Transactions", "Create")</h3>
-<h3>@Html.ActionLink("GM Account Balances", "GMAccount")</h3>
-<table class="table">
+<h3>@Html.ActionLink("GM Transactions", "Create",null, new { @class = "ButtonClass" })</h3>
+<h3>@Html.ActionLink("GM Account Balances", "GMAccount", null,new { @class = "ButtonClass" })</h3>
+<table class="MessageBoard"id="DisplayBoard">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.SendId) 

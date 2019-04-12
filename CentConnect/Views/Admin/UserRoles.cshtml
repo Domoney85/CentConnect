@@ -1,0 +1,54 @@
+﻿
+@model IEnumerable<CentConnect.Models.UserRole>
+    @{
+        /**/
+
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>User Roles</title>
+    </head>
+    <body>
+        Welcome to the Admin Portal
+
+
+        @{
+            <h3>Active Admin</h3>
+            foreach (var item in Model)
+            {
+
+                if (item.Name == "Admin")
+                {
+                     using (Html.BeginForm("RemoveAdmin", "Admin", new { emailName = item.Email.ToString() }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value=@item.Email id=@item.Email />
+                    }
+                   
+                }
+            }
+            <h3>Users</h3>
+            foreach (var item in Model)
+            {
+                if (item.Name != "Admin")
+                {
+                    using (Html.BeginForm("AddAdmin", "Admin", new { emailName = item.Email.ToString() }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <input type="submit" value=@item.Email id=@item.Email />
+                    }
+                    
+                }
+            }
+
+        }
+        <div>
+        </div>
+    </body>
+</html>
