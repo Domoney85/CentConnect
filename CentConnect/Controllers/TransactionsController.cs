@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
 using System.Web;
+using System.Net;
 using System.Web.Mvc;
 using CentConnect.Models;
 using Microsoft.AspNet.Identity;
@@ -15,15 +15,21 @@ namespace CentConnect.Controllers
 {
     public class TransactionsController : Controller
     {
+        private SessionInfo mySession;
         private CentPayDBEntities db = new CentPayDBEntities();
 
         // GET: Transactions
+        [Authorize]
         public ActionResult Index(int? id)
         {
-
-            List<TransPackage> tempList = new List<TransPackage>();
-            var UserID = User.Identity.GetUserId();
-            if (db.CharAccs.Find(id).AccId == UserID)
+            
+            mySession = new SessionInfo();
+            mySession.TempCampID = db.CharAccs.Find(id).CampID;
+            mySession.TempGMPass = db.CharAccs.Find(id).IsGM;
+            mySession.TempCharID = (int)id;
+            Session["SessionData"] = mySession;
+            List<TransPackage> tempList = new List<TransPackage>();  
+            if (db.CharAccs.Find(id).AccId == User.Identity.GetUserId())
             {
                 var charTrans = from c in db.Transactions
                                 where c.SendId.ToString() == id.ToString() || c.RecId.ToString() == id.ToString()
@@ -53,10 +59,7 @@ namespace CentConnect.Controllers
                     }
 
                 }
-                SessionInfo.TempCampID = db.CharAccs.Find(id).CampID;
-                SessionInfo.TempGMPass = db.CharAccs.Find(id).IsGM;
-                SessionInfo.TempCharID = (int)id;
-                SessionInfo.SumAccount = Rec - Sent;
+                mySession.SumAccount = Rec - Sent;
 
                 foreach (Transaction x in charTrans)
                 {
@@ -70,24 +73,25 @@ namespace CentConnect.Controllers
 
                 }
 
-                ViewBag.SumAccount = SessionInfo.SumAccount;
+                ViewBag.SumAccount = mySession.SumAccount;
                 // "TransId,SendId,RecId,Amount,Reason,Status"
                 return View(tempList);
             }
             else
-                return Content("Improper Character Identity");
+                return Content("Improper Character Identity "+User.Identity.GetUserName());
+                
         }
 
         public ActionResult GMRender()
         {
-
+            mySession = (SessionInfo)Session["SessionData"];
             var UserID = User.Identity.GetUserId();
-            if (SessionInfo.TempCampID > 0 && SessionInfo.TempGMPass != null)
+            if (mySession.TempCampID > 0 && mySession.TempGMPass != null)
             {
-                if (db.Campaigns.Find(SessionInfo.TempCampID).GMPass.Trim() == SessionInfo.TempGMPass.Trim())
+                if (db.Campaigns.Find(mySession.TempCampID).GMPass.Trim() == mySession.TempGMPass.Trim())
                 {
                     var charList = from x in db.CharAccs
-                                   where x.CampID == SessionInfo.TempCampID
+                                   where x.CampID == mySession.TempCampID
                                    select x.CharId;
 
                     var GMTrans = from c in db.Transactions
@@ -96,11 +100,11 @@ namespace CentConnect.Controllers
                                     select c;
                     return PartialView("_GMRender", GMTrans.ToList());
                 }
-                return Content("<H2>Welcome " + db.CharAccs.Find(SessionInfo.TempCharID).CharName + "</H2></br> Your GMPassword did not work");
+                return Content("<H2>Welcome " + db.CharAccs.Find(mySession.TempCharID).CharName + "</H2></br> Your GMPassword did not work");
             }
             // "TransId,SendId,RecId,Amount,Reason,Status"
             else
-                return Content("<H2>Welcome " + db.CharAccs.Find(SessionInfo.TempCharID).CharName + "</H2>");
+                return Content("<H2>Welcome " + db.CharAccs.Find(mySession.TempCharID).CharName + "</H2>");
 
         }
 
@@ -134,13 +138,14 @@ namespace CentConnect.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "TransId,SendId,RecId,Amount,Reason,Status")] Transaction transaction)
         {
+            mySession = (SessionInfo)Session["SessionData"];
             transaction.Status = true;
             transaction.TransTime = System.DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Transactions.Add(transaction);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
+                return RedirectToAction("Index" + "/" + mySession.TempCharID);
             }
 
             return View(transaction);
@@ -151,7 +156,8 @@ namespace CentConnect.Controllers
         // GET: Transactions/Create
         public ActionResult PlayerSend(int? Id)
         {
-            ViewBag.ErrorMessage = SessionInfo.errorFundMessage;
+            mySession = (SessionInfo)Session["SessionData"];
+            ViewBag.ErrorMessage = mySession.errorFundMessage;
             var campID = db.CharAccs.Find(Id).CampID;
             var activeChar = from x in db.CharAccs
                              where x.Removed != true && x.CampID == campID
@@ -168,28 +174,29 @@ namespace CentConnect.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index([Bind(Include = "TransId,SendId,RecId,Amount,Reason,Status")] Transaction transaction)
         {
-            transaction.SendId = SessionInfo.TempCharID;
+            mySession = (SessionInfo)Session["SessionData"];
+            transaction.SendId = mySession.TempCharID;
             transaction.Status = true;
             transaction.TransTime = System.DateTime.Now;
             transaction.Amount = Int32.Parse(transaction.Amount.ToString());
             if (ModelState.IsValid)
             {
-                if (transaction.Amount <= SessionInfo.SumAccount)
+                if (transaction.Amount <= mySession.SumAccount)
                 {
                     ViewBag.ErrorMessage = "";
                     db.Transactions.Add(transaction);
                     await db.SaveChangesAsync();
-                    SessionInfo.errorFundMessage = "";
-                    return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
+                    mySession.errorFundMessage = "";
+                    return RedirectToAction("Index" + "/" + mySession.TempCharID);
                 }
                 else
                 {
-                    SessionInfo.errorFundMessage = "Insufficient Funds";
-                    return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
+                    mySession.errorFundMessage = "Insufficient Funds";
+                    return RedirectToAction("Index" + "/" + mySession.TempCharID);
                 }
             }
-            SessionInfo.errorFundMessage = "";
-            return RedirectToAction("Index" + "/" + SessionInfo.TempCharID);
+            mySession.errorFundMessage = "";
+            return RedirectToAction("Index" + "/" + mySession.TempCharID);
         }
 
 
@@ -263,7 +270,7 @@ namespace CentConnect.Controllers
         public ActionResult GMAccount()
         {
             var SumAcc = from x in db.SummaryAccs
-                         where x.CampID == SessionInfo.TempCampID
+                         where x.CampID == mySession.TempCampID
                          select x;
             return View("GMAccount", db.SummaryAccs.ToList());
         }

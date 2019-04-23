@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
+using System.Web.Mvc.Async;
 using System.Web.Mvc;
 using CentConnect.Models;
 using Microsoft.AspNet.Identity;
@@ -30,7 +30,7 @@ namespace CentConnect.Controllers
                         where c.AccId.ToString() == UserID && c.Removed != true
                         select c;
    
-            return View(model.ToList());
+            return  View( model.ToList());
         }
 
         // GET: CharAccs/Details/5

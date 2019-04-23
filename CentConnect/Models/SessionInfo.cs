@@ -10,13 +10,14 @@ using System.Security.Claims;
 
 namespace CentConnect.Models
 {
-    public static class SessionInfo
+    public class SessionInfo
     {
-        public static int TempCharID {get; set;}
-        public static int TempCampID { get; set; }
-        public static string TempGMPass { get; set; }
-        public static int SumAccount { get; set; }
-        public static string errorFundMessage { get; set; }
+        public int TempCharID {get; set;}
+        public int TempCampID { get; set; }
+        public string TempGMPass { get; set; }
+        public int SumAccount { get; set; }
+        public string errorFundMessage { get; set; }
 
     }
+ 
 }
